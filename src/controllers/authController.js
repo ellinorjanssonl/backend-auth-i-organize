@@ -1,6 +1,7 @@
-
+// src/controllers/authController.js
 const authService = require('../services/authService');
 
+// Register a new user
 const register = async (req, res) => {
   const { username, password } = req.body;
   try {
@@ -11,6 +12,7 @@ const register = async (req, res) => {
   }
 };
 
+// Login a user
 const login = async (req, res) => {
   const { username, password } = req.body;
   try {
