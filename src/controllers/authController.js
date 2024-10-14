@@ -1,26 +1,39 @@
-// src/controllers/authController.js
-const authService = require('../services/authService');
+const jwt = require('jsonwebtoken');
+const { readUsers, writeUsers } = require('../utils/userUtils');
+const { hashPassword, comparePassword } = require('../utils/passwordUtils');
 
-// Register a new user
-const register = async (req, res) => {
+// Registrera användare
+exports.register = (req, res) => {
   const { username, password } = req.body;
-  try {
-    const newUser = await authService.register(username, password);
-    res.status(201).json(newUser);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+  const users = readUsers();
+
+  // Kolla om användaren redan finns
+  if (users.some(user => user.username === username)) {
+    return res.status(400).json({ message: 'Användarnamnet är redan taget' });
   }
+
+  // Hasha lösenordet och skapa ny användare
+  const hashedPassword = hashPassword(password);
+  const newUser = { id: users.length + 1, username, password: hashedPassword };
+
+  users.push(newUser);
+  writeUsers(users);
+
+  res.status(201).json({ message: 'Registrering lyckades!' });
 };
 
-// Login a user
-const login = async (req, res) => {
+// Logga in användare
+exports.login = (req, res) => {
   const { username, password } = req.body;
-  try {
-    const token = await authService.login(username, password);
-    res.status(200).json({ token });
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-};
+  const users = readUsers();
 
-module.exports = { register, login };
+  const user = users.find(user => user.username === username);
+  if (!user || !comparePassword(password, user.password)) {
+    return res.status(400).json({ message: 'Felaktigt användarnamn eller lösenord' });
+  }
+
+  // Skapa JWT-token
+  const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+  res.json({ token });
+};
