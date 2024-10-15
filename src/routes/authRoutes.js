@@ -21,6 +21,7 @@ router.post('/login', (req, res) => {
     
     if (user) {
       res.json({ message: 'Du är inloggad!', id: user.id, token: 'some-token' }); // Returnera JSON-svar
+      
     } else {
       res.status(401).json({ message: 'Fel användarnamn eller lösenord' }); // Returnera JSON vid fel
     }
