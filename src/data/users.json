@@ -1,4 +1,16 @@
-[{
-    "username": "username",
-    "password": "password"
-  }]
+[
+  {
+    "username": "user",
+    "password": "pass"
+  },
+  {
+    "username": "admin",
+    "password": "admin"
+  },
+  {
+    "id": "1",
+    "username": "ellinor",
+    "password": "password",
+    "email": "ellinor_jansson@hotmaol.com"
+  }
+]
