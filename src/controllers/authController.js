@@ -62,6 +62,8 @@ const loginUser = async (req, res) => {
     };
 
     const token = await signJWT(payload);
+    
+
     return res.status(200).json({ message: "Login successful", token });
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
