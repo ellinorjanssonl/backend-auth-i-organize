@@ -1,6 +1,6 @@
 const { signJWT, validateJWT } = require("../utils/jwtUtils.js");
-const { hashPassword, verifyPassword } = require("../utils/bcryptjs.js");
-const pool = require("../utils/connectDB.js");
+const { hashPassword, verifyPassword } = require("../utils/bycript.js");
+const pool = require("./../utils/createDB");
 
 const registerUser = async (req, res) => {
   const { fullname, email, password } = req.body;
