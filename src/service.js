@@ -9,7 +9,10 @@ const authRoutes = require("./routes/authRoutes");
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173', // Byt till din frontend-domän
+    credentials: true,               // Tillåt att cookies skickas med
+  }));
 
 app.use("/auth", authRoutes);
 
